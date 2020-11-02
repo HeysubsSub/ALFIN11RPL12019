@@ -15,12 +15,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Dataadapter extends RecyclerView.Adapter<Dataadapter.DatakuViewHolder> {
-    private ArrayList<Model> dataList;
+public class DataAdapterFavourite extends RecyclerView.Adapter<DataAdapterFavourite.DatakuViewHolder> {
+    private List<ModelMovieRealm> dataList;
     private Callback callback;
     View viewku;
     int posku;
@@ -31,7 +32,7 @@ public class Dataadapter extends RecyclerView.Adapter<Dataadapter.DatakuViewHold
     }
 
 
-    public Dataadapter(ArrayList<Model> dataList, Callback callback) {
+    public DataAdapterFavourite(List<ModelMovieRealm> dataList, Callback callback) {
         this.callback = callback;
         this.dataList = dataList;
         Log.d("makanan", "MahasiswaAdapter: "+dataList.size()+"");
@@ -46,12 +47,14 @@ public class Dataadapter extends RecyclerView.Adapter<Dataadapter.DatakuViewHold
 
     @Override
     public void onBindViewHolder(final DatakuViewHolder holder, final int position) {
-        holder.txtNama.setText(dataList.get(position).getOriginal_title());
-        holder.txtNpm.setText(dataList.get(position).getOverview());
-        Log.d("makananku", "onBindViewHolder: "+dataList.get(position).getPoster_path());
+        holder.txtNama.setText(dataList.get(position).getJudul());
+        holder.txtNpm.setText(dataList.get(position).getReleaseDate());
+        Log.d("makananku", "onBindViewHolder: "+dataList.get(position).getPath());
+        //pakai glide karena untuk nampilkan data gambar dari URL / permission / graddle
         Glide.with(holder.itemView)
-                .load(dataList.get(position).getPoster_path())
-                .override(Target.SIZE_ORIGINAL)
+                .load(dataList.get(position).getPath())
+                //.override(Target.SIZE_ORIGINAL)
+                .apply(new RequestOptions().override(600, 200))
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.ivprofile);
 
@@ -71,9 +74,9 @@ public class Dataadapter extends RecyclerView.Adapter<Dataadapter.DatakuViewHold
             super(itemView);
             viewku=itemView;
             card = (CardView) itemView.findViewById(R.id.cardku);
-            ivprofile = (ImageView) itemView.findViewById(R.id.ivlogo);
-            txtNama = (TextView) itemView.findViewById(R.id.tvnew1);
-            txtNpm = (TextView) itemView.findViewById(R.id.tvndesc1);
+            ivprofile = (ImageView) itemView.findViewById(R.id.ivprofile);
+            txtNama = (TextView) itemView.findViewById(R.id.tvname);
+            txtNpm = (TextView) itemView.findViewById(R.id.tvdesc);
             itemView.setOnCreateContextMenuListener(this);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -114,3 +117,4 @@ public class Dataadapter extends RecyclerView.Adapter<Dataadapter.DatakuViewHold
     };
 
 }
+
